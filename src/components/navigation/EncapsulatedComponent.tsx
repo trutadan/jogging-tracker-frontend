@@ -25,10 +25,10 @@ const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> =
     }, [navigate, allowedRoles]);
 
     return (
-    <>
-        <Navbar />
-        <Component {...rest} />
-    </>
+        <>
+            <Navbar />
+            <Component {...rest} />
+        </>
     );
 };
   
