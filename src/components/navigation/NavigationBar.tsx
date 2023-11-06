@@ -15,23 +15,37 @@ const CenterContent = () => {
         My Entries
       </Link>
     );
+
     const usersLink = (
       <Link to="/users" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
         Users
       </Link>
     );
+
     const allEntriesLink = (
       <Link to="/entries/admin" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
         All Entries
       </Link>
     );
+
+    const weekSpeedDistanceReportLink = (
+      <Link to="/entries/report" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
+        Week report
+      </Link>
+    );
   
     if (isRegularUser()) {
-      return entriesLink;
+      return (
+        <div>
+          {entriesLink}
+          {weekSpeedDistanceReportLink}
+        </div>
+      );
     } else if (isUserManager()) {
       return (
         <div>
           {entriesLink}
+          {weekSpeedDistanceReportLink}
           {usersLink}
         </div>
       );
@@ -39,6 +53,7 @@ const CenterContent = () => {
       return (
         <div>
           {entriesLink}
+          {weekSpeedDistanceReportLink}
           {usersLink}
           {allEntriesLink}
         </div>
