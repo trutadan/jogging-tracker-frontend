@@ -17,17 +17,22 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* public routes */}
         <Route path="/" element={<EncapsulatedComponent component={HomePage} />} />
         <Route path="/register" element={<EncapsulatedComponent component={RegisterPage} />} />
         <Route path="/login" element={<EncapsulatedComponent component={LoginPage} />} />    
+        <Route path="/unauthorized" element={<EncapsulatedComponent includeNavbar={false} component={UnauthorizedPage} />} />
+
+        {/* any user */}
         <Route path="/entries" element={<EncapsulatedComponent component={TimeEntriesPage} />} />
         <Route path="/entries/report" element={<EncapsulatedComponent component={ReportsPage} />} />
         <Route path="/entries/add" element={<EncapsulatedComponent component={AddEntryPage} />} />
         <Route path="/entries/:entryId" element={<EncapsulatedComponent component={EntryDetailsPage} />} />
         <Route path="/entries/:entryId/edit" element={<EncapsulatedComponent component={EditEntryDetailsPage} />} />
         <Route path="/entries/:entryId/delete" element={<EncapsulatedComponent component={DeleteEntryForm} />} />
-        <Route path="/unauthorized" element={<EncapsulatedComponent component={UnauthorizedPage} />} />
-        <Route path="/*" element={<EncapsulatedComponent component={MissingPage} />} />
+
+        {/* catch all */}
+        <Route path="/*" element={<EncapsulatedComponent includeNavbar={false} component={MissingPage} />} />
       </Routes>
     </Router>
   );

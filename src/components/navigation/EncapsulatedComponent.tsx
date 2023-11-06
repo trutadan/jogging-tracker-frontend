@@ -6,10 +6,16 @@ import Navbar from './NavigationBar';
 
 type EncapsulatedComponentProps = {
     allowedRoles?: string[];
+    includeNavbar?: boolean;
     component: React.ComponentType<any>;
 };
 
-const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> = ({ allowedRoles, component: Component, ...rest }) => {
+const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> = ({ 
+    allowedRoles, 
+    includeNavbar = true,
+    component: Component, 
+    ...rest 
+}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +32,7 @@ const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> =
 
     return (
         <>
-            <Navbar />
+            {includeNavbar && <Navbar />}
             <Component {...rest} />
         </>
     );
