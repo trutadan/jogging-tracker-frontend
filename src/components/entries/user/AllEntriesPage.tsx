@@ -46,7 +46,7 @@ const TimeEntriesPage = () => {
             if (error.response.status === 401) {
               navigate("/unauthorized");
             } else {
-              toast.error("An error occurred while fetching entries");
+              toast.error("An error occurred while fetching entries!");
             }
         });
     };
@@ -66,11 +66,9 @@ const TimeEntriesPage = () => {
         fetchEntries({ page: page, start_date: startDate, end_date: endDate });
     };
 
-
-
     return (
         <Container>
-        <h1>My time entries</h1>
+        <h1>My time entries:</h1>
 
         <div style={{ marginBottom: '10px' }}>
             <TextField

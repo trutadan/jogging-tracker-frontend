@@ -51,9 +51,9 @@ const ReportsPage = () => {
 
     return (
         <Container>
-            <h1>Speed/Distance reports per Week</h1>
+            <h1>Speed/Distance reports per week</h1>
             {loading && <CircularProgress />}
-            {!loading && reports.length === 0 && <p>No reports found.</p>}
+            {!loading && reports.length === 0 && <p>No reports found!</p>}
             {!loading && reports.length > 0 && (
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">

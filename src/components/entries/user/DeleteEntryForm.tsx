@@ -22,12 +22,12 @@ const DeleteEntryForm = () => {
         try {
             const response = await customAxios().delete(`/time_entries/${entryId}`);
             toast.success(response.data.message);
-            navigate(-1);
+            navigate("/time_entries");
         } catch (error: any) {
             if (error.response.status === 401) {
                 navigate("/unauthorized"); 
             } else {
-                toast.error("An error occurred while deleting the entry");
+                toast.error("An error occurred while deleting the entry!");
             }
         }
     };
@@ -44,7 +44,7 @@ const DeleteEntryForm = () => {
                 <IconButton onClick={handleGoBack}>
                     <ArrowBackIcon />
                 </IconButton>
-                Are you sure you want to delete this item? This cannot be undone!
+                Are you sure you want to delete this entry? This cannot be undone!
             </CardContent>
 
             <CardActions>

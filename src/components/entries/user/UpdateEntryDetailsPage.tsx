@@ -12,7 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const EditEntryDetailsPage = () => {
     const navigate = useNavigate();
 
-    const { entryId } = useParams<{ entryId: string }>();
+    const { entryId } = useParams();
 
     const validationSchema = Yup.object().shape({
         date: Yup.string().required('Date is required'),
@@ -48,14 +48,14 @@ const EditEntryDetailsPage = () => {
                 if (error.response.status === 401) {
                     navigate('/unauthorized');
                 } else {
-                    toast.error("Error fetching TimeEntry: ", error);
+                    toast.error("Error fetching time entry: ", error);
                 }
             });
-    }, [entryId]);
-
+    });
+    
     const handleSubmit = (timeEntry: TimeEntry) => {
         customAxios()
-            .put(`/time_entries/${entryId}`, timeEntry)
+            .put(`/time_entries/${entryId}`, {time_entry: timeEntry})
             .then(() => {
                 toast.success('TimeEntry updated successfully!');
                 navigate('/entries');
@@ -64,7 +64,7 @@ const EditEntryDetailsPage = () => {
                 if (error.response.status === 401) {
                     navigate('/unauthorized');
                 } else {
-                    toast.error('An error occurred while updating the Time Entry');
+                    toast.error('An error occurred while updating the time entry!');
                 }
             });
     };
@@ -179,7 +179,7 @@ const EditEntryDetailsPage = () => {
                         color="primary"
                         fullWidth
                     >
-                        Update Entry
+                        UPDATE ENTRY
                     </Button>
                 </form>
             </Grid>

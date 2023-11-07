@@ -18,31 +18,26 @@ const LoginPage = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleLoginSubmit = (values: LoginForm) => {
-        const loginForm: LoginForm = {
-          email: values.email,
-          password: values.password,
-        };
-    
+    const handleLoginSubmit = (loginForm: LoginForm) => {
         login(loginForm)
           .then(() => {
             navigate("/");
           })
           .catch((error) => {
-            const errorMessage = (error.response && error.response.data && error.response.data.error) || error.message || 'An error occurred while logging in.';
+            const errorMessage = (error.response && error.response.data && error.response.data.error) || error.message || 'An error occurred while logging in!';
             toast.error(errorMessage);
           });
     };
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string().required('Email is required!'),
-        password: Yup.string().required('Password is required!'),
+      email: Yup.string().required('Email is required'),
+      password: Yup.string().required('Password is required'),
     });
 
     const formik = useFormik({
         initialValues: {
-        email: '',
-        password: '',
+          email: '',
+          password: '',
         },
         validationSchema: validationSchema,
         onSubmit: handleLoginSubmit,

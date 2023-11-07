@@ -9,9 +9,14 @@ import EncapsulatedComponent from './components/navigation/EncapsulatedComponent
 import TimeEntriesPage from './components/entries/user/AllEntriesPage';
 import DeleteEntryForm from './components/entries/user/DeleteEntryForm';
 import EntryDetailsPage from './components/entries/user/EntryDetailsPage';
-import ReportsPage from './components/entries/user/WeekSpeedDistanceReport';
+import ReportsPage from './components/entries/user/WeekSpeedDistanceReports';
 import AddEntryPage from './components/entries/user/AddEntryPage';
 import EditEntryDetailsPage from './components/entries/user/UpdateEntryDetailsPage';
+import UsersPage from './components/users/AllUsersPage';
+import UserDetailsPage from './components/users/UserDetailsPage';
+import DeleteUserForm from './components/users/DeleteUserForm';
+import AddUserPage from './components/users/AddUserPage';
+import EditUserDetailsPage from './components/users/UpdateUserDetailsPage';
 
 function App() {
   return (
@@ -30,6 +35,13 @@ function App() {
         <Route path="/entries/:entryId" element={<EncapsulatedComponent component={EntryDetailsPage} />} />
         <Route path="/entries/:entryId/edit" element={<EncapsulatedComponent component={EditEntryDetailsPage} />} />
         <Route path="/entries/:entryId/delete" element={<EncapsulatedComponent component={DeleteEntryForm} />} />
+
+        {/* admin/user manager */}
+        <Route path="/users" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={UsersPage} />} />
+        <Route path="/users/add" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={AddUserPage} />} />
+        <Route path="/users/:userId" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={UserDetailsPage} />} />
+        <Route path="/users/:userId/edit" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={EditUserDetailsPage} />} />
+        <Route path="/users/:userId/delete" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={DeleteUserForm} />} />
 
         {/* catch all */}
         <Route path="/*" element={<EncapsulatedComponent includeNavbar={false} component={MissingPage} />} />

@@ -1,7 +1,7 @@
-interface User {
+interface UserUpdate {
     username: string;
     email: string;
     role: string;
 }
 
-export default User;
+export default UserUpdate;

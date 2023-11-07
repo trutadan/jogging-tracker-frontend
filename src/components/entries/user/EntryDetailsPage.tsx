@@ -8,7 +8,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ExtendedTimeEntry from "../../../models/ExtendedTimeEntry";
 
-
 const EntryDetailsPage = () => {
     const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const EntryDetailsPage = () => {
                 if (error.response.status === 401) {
                     navigate("/unauthorized");
                 } else {
-                    toast.error("An error occurred while fetching the entry details");
+                    toast.error("An error occurred while fetching the entry details!");
                 }
             });
     }, []);

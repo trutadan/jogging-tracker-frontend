@@ -30,7 +30,7 @@ const AddEntryPage = () => {
     
     const handleSubmit = (timeEntry: TimeEntry) => {
         customAxios()
-            .post('/time_entries', timeEntry)
+            .post('/time_entries', {time_entry: timeEntry})
             .then(() => {
                 toast.success('TimeEntry added successfully!');
                 navigate('/entries');
@@ -39,7 +39,7 @@ const AddEntryPage = () => {
                 if (error.response.status === 401) {
                     navigate('/unauthorized');
                 } else {
-                    toast.error('An error occurred while adding the Time Entry');
+                    toast.error('An error occurred while adding the time entry!');
                 }
             });
     };
@@ -146,7 +146,7 @@ const AddEntryPage = () => {
                         color="primary"
                         fullWidth
                     >
-                        Add Entry
+                        ADD ENTRY
                     </Button>
                 </form>
             </Grid>

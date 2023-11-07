@@ -12,25 +12,25 @@ const CenterContent = () => {
   
     const entriesLink = (
       <Link to="/entries" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
-        My Entries
+        My entries
       </Link>
     );
 
     const usersLink = (
       <Link to="/users" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
-        Users
+        All users
       </Link>
     );
 
     const allEntriesLink = (
       <Link to="/entries/admin" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
-        All Entries
+        All entries
       </Link>
     );
 
     const weekSpeedDistanceReportLink = (
       <Link to="/entries/report" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
-        Week report
+        Week reports
       </Link>
     );
   

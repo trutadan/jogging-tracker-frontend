@@ -1,4 +1,7 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, 
+  Grid, 
+  TextField, 
+  Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { register } from "../../services/authentication.service";
@@ -10,6 +13,29 @@ import "react-toastify/dist/ReactToastify.css";
 const RegistrationPage = () => {
     const navigate = useNavigate();
 
+    const validationSchema = Yup.object().shape({
+      username: Yup.string()
+          .required('Username is required')
+          .max(25, 'Username must be at most 25 characters long'),
+      email: Yup.string()
+          .required('Email is required')
+          .max(255, 'Email must be at most 255 characters long')
+          .matches(
+              /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+              'Invalid email address!'
+          ),
+      password: Yup.string()
+          .required('Password is required')
+          .min(8, 'Password must be at least 8 characters long')
+          .matches(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+              'Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character'
+          ),
+      password_confirmation: Yup.string()
+          .required('Password confirmation is required')
+          .oneOf([Yup.ref('password')], 'Passwords must match'),
+    });
+
     const handleRegistrationSubmit = (registerForm: RegisterForm) => {
         register(registerForm)
           .then(() => {
@@ -17,33 +43,10 @@ const RegistrationPage = () => {
             navigate("/login");
           })
           .catch((error) => {
-            const errorMessage = (error.response && error.response.data && error.response.data.error) || error.message || 'An error occurred during registration.';
+            const errorMessage = (error.response && error.response.data && error.response.data.error) || error.message || 'An error occurred during registration!';
             toast.error(errorMessage);
           });
     };
-
-    const validationSchema = Yup.object().shape({
-        username: Yup.string()
-            .required('Username is required')
-            .max(25, 'Username must be at most 25 characters long'),
-        email: Yup.string()
-            .required('Email is required')
-            .max(255, 'Email must be at most 255 characters long')
-            .matches(
-                /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-                'Invalid email address'
-            ),
-        password: Yup.string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters long')
-            .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
-                'Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character'
-            ),
-        password_confirmation: Yup.string()
-            .required('Password confirmation is required')
-            .oneOf([Yup.ref('password')], 'Passwords must match'),
-    });
 
     const formik = useFormik({
         initialValues: {
@@ -59,7 +62,11 @@ const RegistrationPage = () => {
     return (
         <>
           <ToastContainer />
-    
+
+          <Typography variant="h3" style={{ margin: "24px 0" }}>
+            Start jogging today!
+          </Typography>
+
           <Grid container justifyContent="center">
             <form 
               style={{
