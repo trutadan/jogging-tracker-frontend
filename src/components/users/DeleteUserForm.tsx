@@ -19,17 +19,19 @@ const DeleteUserForm = () => {
     const handleDelete = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
 
-        try {
-            const response = await customAxios().delete(`/users/${userId}`);
-            toast.success(response.data.message);
-            navigate("/users");
-        } catch (error: any) {
-            if (error.response.status === 401) {
-                navigate("/unauthorized"); 
-            } else {
-                toast.error("An error occurred while deleting the user!");
-            }
-        }
+        customAxios()
+            .delete(`/users/${userId}`)
+            .then((response) => {
+                toast.success(response.data.message);
+                navigate("/users");
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate("/unauthorized"); 
+                } else {
+                    toast.error("An error occurred while deleting the user!");
+                }
+            });
     };
 
     const handleGoBack = (event: { preventDefault: () => void }) => {

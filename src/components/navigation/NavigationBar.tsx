@@ -23,7 +23,7 @@ const CenterContent = () => {
     );
 
     const allEntriesLink = (
-      <Link to="/entries/admin" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
+      <Link to="/admin/entries" style={{ textDecoration: "none", color: "white", marginRight: "50px" }}>
         All entries
       </Link>
     );

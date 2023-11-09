@@ -7,7 +7,7 @@ import Navbar from './NavigationBar';
 type EncapsulatedComponentProps = {
     allowedRoles?: string[];
     includeNavbar?: boolean;
-    component: React.ComponentType<any>;
+    component: React.ComponentType<RouteProps>;
 };
 
 const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> = ({ 
@@ -33,7 +33,7 @@ const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> =
     return (
         <>
             {includeNavbar && <Navbar />}
-            <Component {...rest} />
+            <Component {...rest as RouteProps} />
         </>
     );
 };

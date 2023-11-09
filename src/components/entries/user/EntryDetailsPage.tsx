@@ -11,14 +11,14 @@ import ExtendedTimeEntry from "../../../models/ExtendedTimeEntry";
 const EntryDetailsPage = () => {
     const navigate = useNavigate();
 
-    const {entryId} = useParams();
+    const { entryId } = useParams();
     const [entry, setEntry] = useState<ExtendedTimeEntry>();
 
-    useEffect(() => {
+    const fetchEntry = async () => {
         customAxios()
             .get(`/time_entries/${entryId}`)
             .then((response) => {
-                const entryData: ExtendedTimeEntry = response.data;
+                const entryData = response.data.time_entry ? response.data.time_entry : response.data;
                 setEntry(entryData);
             })
             .catch((error) => {
@@ -28,6 +28,10 @@ const EntryDetailsPage = () => {
                     toast.error("An error occurred while fetching the entry details!");
                 }
             });
+    };
+
+    useEffect(() => {
+        fetchEntry();
     }, []);
 
     const handleGoBack = (event: { preventDefault: () => void }) => {
@@ -40,7 +44,7 @@ const EntryDetailsPage = () => {
             <h1 style={{margin: "24px 0"}}>About the time entry:</h1>
             <CardContent>
                 <p><b>Entry date:</b> {entry?.date}</p>
-                <p><b>Traveled distance: </b> {entry?.distance} km</p>
+                <p><b>Traveled distance:</b> {entry?.distance} km</p>
                 <p><b>The duration:</b> {formatTime(entry)}</p>
 
                 <Button style={{margin: "10px 10px 0 0px"}} variant="contained" onClick={handleGoBack}>

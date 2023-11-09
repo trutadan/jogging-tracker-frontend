@@ -18,18 +18,20 @@ const DeleteEntryForm = () => {
 
     const handleDelete = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-
-        try {
-            const response = await customAxios().delete(`/time_entries/${entryId}`);
-            toast.success(response.data.message);
-            navigate("/time_entries");
-        } catch (error: any) {
-            if (error.response.status === 401) {
-                navigate("/unauthorized"); 
-            } else {
-                toast.error("An error occurred while deleting the entry!");
-            }
-        }
+        
+        customAxios()
+            .delete(`/time_entries/${entryId}`)
+            .then((response) => {
+                toast.success(response.data.message);
+                navigate("/entries");
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate("/unauthorized");
+                } else {
+                    toast.error("An error occurred while deleting the entry!");
+                }
+            });
     };
 
     const handleGoBack = (event: { preventDefault: () => void }) => {
@@ -38,22 +40,22 @@ const DeleteEntryForm = () => {
     };
 
     return (
-    <Container>
-        <Card>
-            <CardContent>
-                <IconButton onClick={handleGoBack}>
-                    <ArrowBackIcon />
-                </IconButton>
-                Are you sure you want to delete this entry? This cannot be undone!
-            </CardContent>
+        <Container>
+            <Card>
+                <CardContent>
+                    <IconButton onClick={handleGoBack}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                    Are you sure you want to delete this entry? This cannot be undone!
+                </CardContent>
 
-            <CardActions>
-                <Button onClick={handleDelete}>Delete it</Button>
-                <Button onClick={handleGoBack}>Cancel</Button>
-            </CardActions>
-        </Card>
-        <ToastContainer position="top-right" autoClose={5000} />
-    </Container>
+                <CardActions>
+                    <Button onClick={handleDelete}>Delete it</Button>
+                    <Button onClick={handleGoBack}>Cancel</Button>
+                </CardActions>
+            </Card>
+            <ToastContainer position="top-right" autoClose={5000} />
+        </Container>
     );
 };
 

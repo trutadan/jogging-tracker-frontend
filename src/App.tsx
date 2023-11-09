@@ -17,6 +17,11 @@ import UserDetailsPage from './components/users/UserDetailsPage';
 import DeleteUserForm from './components/users/DeleteUserForm';
 import AddUserPage from './components/users/AddUserPage';
 import EditUserDetailsPage from './components/users/UpdateUserDetailsPage';
+import AddEntryAdminPage from './components/entries/admin/AddEntryAdminPage';
+import TimeEntriesAdminPage from './components/entries/admin/AllEntriesAdminPage';
+import EntryDetailsAdminPage from './components/entries/admin/EntryDetailsAdminPage';
+import EditEntryDetailsAdminPage from './components/entries/admin/UpdateEntryDetailsAdminPage';
+import DeleteEntryAdminForm from './components/entries/admin/DeleteEntryAdminForm';
 
 function App() {
   return (
@@ -42,6 +47,13 @@ function App() {
         <Route path="/users/:userId" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={UserDetailsPage} />} />
         <Route path="/users/:userId/edit" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={EditUserDetailsPage} />} />
         <Route path="/users/:userId/delete" element={<EncapsulatedComponent allowedRoles={['user_manager', 'admin']} component={DeleteUserForm} />} />
+
+        {/* admin */}
+        <Route path="/admin/entries" element={<EncapsulatedComponent allowedRoles={['admin']} component={TimeEntriesAdminPage} />} />
+        <Route path="/admin/entries/add" element={<EncapsulatedComponent allowedRoles={['admin']} component={AddEntryAdminPage} />} />
+        <Route path="/admin/entries/:entryId" element={<EncapsulatedComponent allowedRoles={['admin']} component={EntryDetailsAdminPage} />} />
+        <Route path="/admin/entries/:entryId/edit" element={<EncapsulatedComponent allowedRoles={['admin']} component={EditEntryDetailsAdminPage} />} />
+        <Route path="/admin/entries/:entryId/delete" element={<EncapsulatedComponent allowedRoles={['admin']} component={DeleteEntryAdminForm} />} />
 
         {/* catch all */}
         <Route path="/*" element={<EncapsulatedComponent includeNavbar={false} component={MissingPage} />} />

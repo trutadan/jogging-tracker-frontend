@@ -12,8 +12,8 @@ import {
 import { useEffect, useState } from "react";
 import { customAxios, formatWeekPeriod } from "../../../services/application.service";
 import { useNavigate } from "react-router-dom";
-import SpeedDistanceReport from "../../../models/SpeedDistanceReport";
 import { toast } from "react-toastify";
+import SpeedDistanceReport from "../../../models/SpeedDistanceReport";
 
 const ReportsPage = () => {
     const navigate = useNavigate();
@@ -25,20 +25,22 @@ const ReportsPage = () => {
 
     const fetchReports = async () => {
         setLoading(true);
-        try {
-            const response = await customAxios().get("/time_entries/weekly_reports", {params: {page: page}});
-            setReports(response.data.weekly_averages);
-            setTotalPages(response.data.total_pages);
-            setLoading(false);
-        } catch (error: any) {
-            if (error.response.status === 401) {
+
+        customAxios().get("/time_entries/weekly_reports", {params: {page: page}})
+            .then((response) => {
+                setReports(response.data.weekly_averages);
+                setTotalPages(response.data.total_pages);
                 setLoading(false);
-                navigate("/unauthorized"); 
-            } else {
-                setLoading(false);
-                toast.error("Error fetching reports:", error);
-            }
-        }
+            }).
+            catch((error) => {
+                if (error.response.status === 401) {
+                    setLoading(false);
+                    navigate("/unauthorized"); 
+                } else {
+                    setLoading(false);
+                    toast.error("Error fetching reports:", error);
+                }
+            });
     };
 
     useEffect(() => {

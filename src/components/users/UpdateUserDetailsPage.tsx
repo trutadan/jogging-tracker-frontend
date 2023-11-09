@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { Button, Grid, IconButton, InputLabel, MenuItem, TextField } from "@mui/material";
+import { Button, Grid, IconButton, MenuItem, TextField } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { useFormik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
-import { customAxios } from '../../services/application.service';
+import { customAxios, isAdmin } from '../../services/application.service';
 import * as Yup from 'yup';
 import "react-toastify/dist/ReactToastify.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -27,25 +27,6 @@ const EditUserDetailsPage = () => {
             ),
         role: Yup.string()
             .oneOf(["regular", "user_manager", "admin"], "Role is required"),
-    });
-
-    useEffect(() => {
-        customAxios()
-            .get(`/users/${userId}`)
-            .then((response) => {
-                formik.setValues({
-                    username: response.data.username,
-                    email: response.data.email,
-                    role: response.data.role,
-                });
-            })
-            .catch((error) => {
-                if (error.response.status === 401) {
-                    navigate('/unauthorized');
-                } else {
-                    toast.error("Error fetching users: ", error);
-                }
-            });
     });
 
     const handleSubmit = (userUpdate: UserUpdate) => {
@@ -74,6 +55,29 @@ const EditUserDetailsPage = () => {
         onSubmit: handleSubmit,
     });
 
+    const fetchUser = () => {
+        customAxios()
+            .get(`/users/${userId}`)
+            .then((response) => {
+                formik.setValues({
+                    username: response.data.username,
+                    email: response.data.email,
+                    role: response.data.role,
+                });
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate('/unauthorized');
+                } else {
+                    toast.error("Error fetching users: ", error);
+                }
+            });
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+    
     const handleGoBack = (event: { preventDefault: () => void }) => {
         event.preventDefault();
         navigate(-1);
@@ -113,7 +117,7 @@ const EditUserDetailsPage = () => {
                     {formik.touched.username && formik.errors.username && <div style={{ color: 'red' }}>{formik.errors.username}</div>}
 
                     <TextField
-                        style={{ marginTop: 8 }}
+                        style={{ marginTop: 10 }}
                         label="Email"
                         variant="outlined"
                         fullWidth
@@ -124,9 +128,10 @@ const EditUserDetailsPage = () => {
                     />
                     {formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
 
-                    <InputLabel htmlFor="role">Role</InputLabel>
                     <TextField
                         select
+                        style={{ marginTop: 10 }}
+                        label="Role"
                         variant="outlined"
                         fullWidth
                         name="role"
@@ -136,7 +141,7 @@ const EditUserDetailsPage = () => {
                     >
                         <MenuItem value="regular">Regular</MenuItem>
                         <MenuItem value="user_manager">User manager</MenuItem>
-                        <MenuItem value="admin">Admin</MenuItem>
+                        {isAdmin() && <MenuItem value="admin">Admin</MenuItem>}
                     </TextField>
                     {formik.touched.role && formik.errors.role && <div style={{ color: 'red' }}>{formik.errors.role}</div>}
 

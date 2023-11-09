@@ -32,27 +32,6 @@ const EditEntryDetailsPage = () => {
             .max(59, 'Seconds cannot be more than 59'),
     });
 
-    useEffect(() => {
-        customAxios()
-            .get(`/time_entries/${entryId}`)
-            .then((response) => {
-                formik.setValues({
-                    date: response.data.date,
-                    distance: response.data.distance,
-                    hours: response.data.hours,
-                    minutes: response.data.minutes,
-                    seconds: response.data.seconds,
-                });
-            })
-            .catch((error) => {
-                if (error.response.status === 401) {
-                    navigate('/unauthorized');
-                } else {
-                    toast.error("Error fetching time entry: ", error);
-                }
-            });
-    });
-    
     const handleSubmit = (timeEntry: TimeEntry) => {
         customAxios()
             .put(`/time_entries/${entryId}`, {time_entry: timeEntry})
@@ -81,6 +60,32 @@ const EditEntryDetailsPage = () => {
         onSubmit: handleSubmit,
     });
 
+    const fetchEntry = () => {
+        customAxios()
+            .get(`/time_entries/${entryId}`)
+            .then((response) => {
+                const data = response.data.time_entry ? response.data.time_entry : response.data;
+                formik.setValues({
+                    date: data.date,
+                    distance: data.distance,
+                    hours: data.hours,
+                    minutes: data.minutes,
+                    seconds: data.seconds,
+                });
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate('/unauthorized');
+                } else {
+                    toast.error("Error fetching time entry: ", error);
+                }
+            });
+    };
+
+    useEffect(() => {
+        fetchEntry();
+    }, []);
+    
     const handleGoBack = (event: { preventDefault: () => void }) => {
         event.preventDefault();
         navigate(-1);

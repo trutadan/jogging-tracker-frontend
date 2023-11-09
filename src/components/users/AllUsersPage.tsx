@@ -21,6 +21,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import AddIcon from "@mui/icons-material/Add";
 import ExtendedUser from "../../models/ExtendedUser";
 
+type FetchEntriesParams = {
+    page: number;
+}
+
 const UsersPage = () => {
     const navigate = useNavigate();
 
@@ -30,27 +34,27 @@ const UsersPage = () => {
     const [pageSize] = useState(25);
     const [totalPages, setTotalPages] = useState(0); 
 
-    const fetchEntries = async (params: any) => {
+    const fetchEntries = async (params: FetchEntriesParams) => {
         customAxios()
-        .get("/users", { params })
-        .then((response) => {
-            setUsers(response.data.users);
-            setTotalPages(response.data.total_pages);
-            setLoading(false);
-        })
-        .catch((error: any) => {
-            if (error.response.status === 401) {
-              navigate("/unauthorized");
-            } else {
-              toast.error("An error occurred while fetching entries");
-            }
-        });
+            .get("/users", { params })
+            .then((response) => {
+                setUsers(response.data.users);
+                setTotalPages(response.data.total_pages);
+                setLoading(false);
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate("/unauthorized");
+                } else {
+                    toast.error("An error occurred while fetching entries");
+                }
+            });
     };
 
     useEffect(() => {
         setLoading(true);
         fetchEntries({ page: page });
-    }, [page, pageSize]);
+    }, [page]);
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
@@ -99,7 +103,7 @@ const UsersPage = () => {
                                 </TableCell>
 
                                 <TableCell align="center">
-                                    <Link to={`/users/${user.id}/details`} title="View user's details">
+                                    <Link to={`/users/${user.id}`} title="View user's details">
                                         {user.username}
                                     </Link>
                                 </TableCell>

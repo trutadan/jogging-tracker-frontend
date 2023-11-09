@@ -23,6 +23,12 @@ import InfoIcon from '@mui/icons-material/Info';
 import AddIcon from "@mui/icons-material/Add";
 import ExtendedTimeEntry from "../../../models/ExtendedTimeEntry";
 
+type FetchEntriesParams = {
+    page: number;
+    start_date: string;
+    end_date: string;
+};
+
 const TimeEntriesPage = () => {
     const navigate = useNavigate();
 
@@ -34,27 +40,27 @@ const TimeEntriesPage = () => {
     const [pageSize] = useState(25);
     const [totalPages, setTotalPages] = useState(0); 
 
-    const fetchEntries = async (params: any) => {
+    const fetchEntries = async (params: FetchEntriesParams) => {
         customAxios()
-        .get("/time_entries", { params })
-        .then((response) => {
-            setEntries(response.data.time_entries);
-            setTotalPages(response.data.total_pages);
-            setLoading(false);
-        })
-        .catch((error: any) => {
-            if (error.response.status === 401) {
-              navigate("/unauthorized");
-            } else {
-              toast.error("An error occurred while fetching entries!");
-            }
-        });
+            .get("/time_entries", { params })
+            .then((response) => {
+                setEntries(response.data.time_entries);
+                setTotalPages(response.data.total_pages);
+                setLoading(false);
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    navigate("/unauthorized");
+                } else {
+                    toast.error("An error occurred while fetching entries!");
+                }
+            });
     };
 
     useEffect(() => {
         setLoading(true);
         fetchEntries({ page: page, start_date: startDate, end_date: endDate });
-    }, [page, pageSize]);
+    }, [page]);
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);

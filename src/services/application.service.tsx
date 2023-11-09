@@ -2,6 +2,7 @@ import { getCurrentUserRole, getCurrentUserToken } from "./authentication.servic
 import { BACKEND_API_URL } from "../constants";
 import axios, { AxiosInstance } from "axios";
 import ExtendedTimeEntry from "../models/ExtendedTimeEntry";
+import ExtendedTimeEntryWithUser from "../models/ExtendedTimeEntryWithUser";
 
 export const isAuthenticated = () => {
     return getCurrentUserToken() !== null;
@@ -37,7 +38,7 @@ export const formatTimeWithLeadingZeros = (value: number) => {
     return value.toString().padStart(2, '0');
 };
 
-export const formatTime = (timeEntry?: ExtendedTimeEntry) => {
+export const formatTime = (timeEntry?: ExtendedTimeEntry | ExtendedTimeEntryWithUser) => {
     if (!timeEntry) {
         return "00:00:00";
     }

@@ -6,7 +6,7 @@ import { Button,
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useFormik } from 'formik';
-import { customAxios } from "../../services/application.service";
+import { customAxios, isAdmin } from "../../services/application.service";
 import * as Yup from 'yup';
 import "react-toastify/dist/ReactToastify.css";
 import UserCreate from "../../models/UserCreate";
@@ -122,7 +122,7 @@ const AddUserPage = () => {
                 >
                     <MenuItem value="regular">Regular</MenuItem>
                     <MenuItem value="user_manager">User manager</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
+                    {isAdmin() && <MenuItem value="admin">Admin</MenuItem>}
                 </TextField>
                 {formik.touched.role && formik.errors.role && <div style={{ color: 'red' }}>{formik.errors.role}</div>}
 

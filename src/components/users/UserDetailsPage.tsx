@@ -14,7 +14,7 @@ const UserDetailsPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<ExtendedUser>();
 
-    useEffect(() => {
+    const fetchUser = async () => {
         customAxios()
             .get(`/users/${userId}`)
             .then((response) => {
@@ -28,6 +28,10 @@ const UserDetailsPage = () => {
                     toast.error("An error occurred while fetching the user details!");
                 }
             });
+    };
+
+    useEffect(() => {
+        fetchUser();
     }, []);
 
     const handleGoBack = (event: { preventDefault: () => void }) => {
