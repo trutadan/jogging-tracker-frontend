@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
-import { PersonAdd } from "@mui/icons-material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { LockOpen, PersonAdd } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { login } from "../../services/authentication.service";
@@ -100,6 +100,16 @@ const LoginPage = () => {
               >
                 Log in
               </Button>
+              
+              <Typography variant="body1" style={{ marginTop: 8 }}>
+                Forgot your password?
+                <Link to="/forgot_password">
+                  <Button style={{ marginLeft: 8 }} startIcon={<LockOpen />} color="secondary">
+                    Reset
+                  </Button>
+                </Link>
+              </Typography>
+
               <p style={{ marginBottom: 8 }}>Don't have an account?</p>
               <Link to="/register">
                 <Button startIcon={<PersonAdd />} color="primary">

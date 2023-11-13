@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { getCurrentUsername, logout } from "../../services/authentication.service";
@@ -64,73 +64,77 @@ const CenterContent = () => {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | EventTarget & Element>(null);
-  const open = Boolean(anchorEl);
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchor);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const handleMenu = (event: React.MouseEvent) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenuOpen = () => {
+    if (anchorRef.current) {
+      setMenuAnchor(anchorRef.current);
+    }
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleMenuClose = () => {
+    setMenuAnchor(null);
   };
 
   const handleLogout = () => {
     logout();
     navigate("/");
+    handleMenuClose();
   };
 
-  return (
-    <AppBar position="fixed" sx={{ backgroundColor: "black" }} style={{ top: 0 }}>
-      <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex" }}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <img src={logo} alt="Your Logo" style={{ width: "50px" }} />
-          </Link>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <CenterContent />
-        </div>
-        <div>
-          {getCurrentUsername() ? (
-            <div style={{ display: "flex" }}>
-              <IconButton
-                size="small"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                {getCurrentUsername()}
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
-            </div>
-          ) : (
-            <Button color="inherit" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-          )}
-        </div>
-      </Toolbar>
-    </AppBar>
-  );
+    return (
+      <AppBar position="fixed" sx={{ backgroundColor: "black" }} style={{ top: 0 }}>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex" }}>
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              <img src={logo} alt="Your Logo" style={{ width: "50px" }} />
+            </Link>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <CenterContent />
+          </div>
+          <div>
+            {getCurrentUsername() ? (
+              <div style={{ display: "flex" }}>
+                <IconButton
+                  size="small"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenuOpen}
+                  color="inherit"
+                  ref={anchorRef}
+                >
+                  {getCurrentUsername()}
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={menuAnchor}
+                  open={menuOpen}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                >
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            ) : (
+              <Button color="inherit" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+            )}
+          </div>
+        </Toolbar>
+      </AppBar>
+    );
 };
 
 export default Navbar;

@@ -7,19 +7,21 @@ import Navbar from './NavigationBar';
 type EncapsulatedComponentProps = {
     allowedRoles?: string[];
     includeNavbar?: boolean;
+    authenticationRequired?: boolean;
     component: React.ComponentType<RouteProps>;
 };
 
 const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> = ({ 
     allowedRoles, 
     includeNavbar = true,
+    authenticationRequired = true,
     component: Component, 
     ...rest 
 }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-    if (!isAuthenticated()) {
+    if (!isAuthenticated() && authenticationRequired) {
         navigate('/login');
     } else if (allowedRoles) {
         const userRole = getCurrentUserRole();
@@ -28,7 +30,7 @@ const EncapsulatedComponent: React.FC<EncapsulatedComponentProps & RouteProps> =
             navigate('/unauthorized');
         }
     }
-    }, [navigate, allowedRoles]);
+    }, [allowedRoles, authenticationRequired, navigate]);
 
     return (
         <>

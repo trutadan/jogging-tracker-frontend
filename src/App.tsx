@@ -22,16 +22,20 @@ import TimeEntriesAdminPage from './components/entries/admin/AllEntriesAdminPage
 import EntryDetailsAdminPage from './components/entries/admin/EntryDetailsAdminPage';
 import EditEntryDetailsAdminPage from './components/entries/admin/UpdateEntryDetailsAdminPage';
 import DeleteEntryAdminForm from './components/entries/admin/DeleteEntryAdminForm';
+import ForgotPasswordPage from './components/authentication/ForgotPasswordPage';
+import ResetPasswordPage from './components/authentication/ResetPasswordPage';
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* public routes */}
-        <Route path="/" element={<EncapsulatedComponent component={HomePage} />} />
-        <Route path="/register" element={<EncapsulatedComponent component={RegisterPage} />} />
-        <Route path="/login" element={<EncapsulatedComponent component={LoginPage} />} />    
-        <Route path="/unauthorized" element={<EncapsulatedComponent includeNavbar={false} component={UnauthorizedPage} />} />
+        <Route path="/" element={<EncapsulatedComponent authenticationRequired={false} component={HomePage} />} />
+        <Route path="/register" element={<EncapsulatedComponent authenticationRequired={false} component={RegisterPage} />} />
+        <Route path="/login" element={<EncapsulatedComponent authenticationRequired={false} component={LoginPage} />} />    
+        <Route path="/unauthorized" element={<EncapsulatedComponent authenticationRequired={false} includeNavbar={false} component={UnauthorizedPage} />} />
+        <Route path="/forgot_password" element={<EncapsulatedComponent authenticationRequired={false} component={ForgotPasswordPage} />} />
+        <Route path="/reset_password/:token" element={<EncapsulatedComponent authenticationRequired={false} component={ResetPasswordPage} />} />
 
         {/* any user */}
         <Route path="/entries" element={<EncapsulatedComponent component={TimeEntriesPage} />} />
@@ -56,7 +60,7 @@ function App() {
         <Route path="/admin/entries/:entryId/delete" element={<EncapsulatedComponent allowedRoles={['admin']} component={DeleteEntryAdminForm} />} />
 
         {/* catch all */}
-        <Route path="/*" element={<EncapsulatedComponent includeNavbar={false} component={MissingPage} />} />
+        <Route path="/*" element={<EncapsulatedComponent authenticationRequired={false} includeNavbar={false} component={MissingPage} />} />
       </Routes>
     </Router>
   );
