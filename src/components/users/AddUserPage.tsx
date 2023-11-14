@@ -47,7 +47,20 @@ const AddUserPage = () => {
                 navigate("/users");
             })
             .catch((error) => {
-                const errorMessage = (error.response && error.response.data && error.response.data.error) || error.message || 'An error occurred while adding the ser!';
+                let errorMessage = "An error occurred while adding the user!";
+
+                if (error.response) {
+                    if (error.response.status === 422) {
+                        errorMessage = "Validation error. Please check the input fields.";
+                    } else if (error.response.status === 403) {
+                        errorMessage = "You do not have permission to perform this action.";
+                    } else if (error.response.data && error.response.data.error) {
+                        errorMessage = error.response.data.error;
+                    }
+                } else if (error.message === "Network Error") {
+                    errorMessage = "Unable to connect to the server. Please check your internet connection.";
+                }
+    
                 toast.error(errorMessage);
             });
     };

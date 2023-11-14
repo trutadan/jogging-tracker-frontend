@@ -9,6 +9,7 @@ import {
 import { customAxios } from "../../services/application.service";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { logout } from "../../services/authentication.service";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
   
 const DeleteUserForm = () => {
@@ -23,7 +24,13 @@ const DeleteUserForm = () => {
             .delete(`/users/${userId}`)
             .then((response) => {
                 toast.success(response.data.message);
-                navigate("/users");
+                if (userId === localStorage.getItem("userId")) {
+                    logout();
+                    navigate("/");
+                }
+                else {
+                    navigate("/users");
+                }
             })
             .catch((error) => {
                 if (error.response.status === 401) {

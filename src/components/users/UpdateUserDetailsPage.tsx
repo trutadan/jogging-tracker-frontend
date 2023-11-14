@@ -37,11 +37,24 @@ const EditUserDetailsPage = () => {
                 navigate('/users');
             })
             .catch((error) => {
-                if (error.response.status === 401) {
-                    navigate('/unauthorized');
-                } else {
-                    toast.error('An error occurred while updating the user!');
+                let errorMessage = "An error occurred while updating the user!";
+    
+                if (error.response) {
+                    if (error.response.status === 422) {
+                        errorMessage = "Validation error. Please check the input fields.";
+                        if (error.response.data && error.response.data.errors) {
+                            errorMessage += ` ${error.response.data.errors.join(', ')}`;
+                        }
+                    } else if (error.response.status === 403) {
+                        errorMessage = "You do not have permission to perform this action.";
+                    } else if (error.response.data && error.response.data.error) {
+                        errorMessage = error.response.data.error;
+                    }
+                } else if (error.message === "Network Error") {
+                    errorMessage = "Unable to connect to the server. Please check your internet connection.";
                 }
+    
+                toast.error(errorMessage);
             });
     };
 

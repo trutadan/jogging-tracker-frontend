@@ -22,11 +22,19 @@ const UserDetailsPage = () => {
                 setUser(userData);
             })
             .catch((error) => {
-                if (error.response.status === 401) {
-                    navigate("/unauthorized");
-                } else {
-                    toast.error("An error occurred while fetching the user details!");
+                let errorMessage = "An error occurred while fetching the user details!";
+    
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        errorMessage = "You are not authorized to view this user's details.";
+                    } else if (error.response.status === 404) {
+                        errorMessage = "User not found.";
+                    }
+                } else if (error.message === "Network Error") {
+                    errorMessage = "Unable to connect to the server. Please check your internet connection.";
                 }
+    
+                toast.error(errorMessage);
             });
     };
 

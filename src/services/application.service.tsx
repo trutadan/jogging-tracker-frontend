@@ -64,4 +64,4 @@ export const formatWeekPeriod = (week: string) => {
     const formattedEndDate = endDate.toDateString();
   
     return `${formattedStartDate} - ${formattedEndDate}`;
-  }
+};
